@@ -5,6 +5,7 @@ import pandas as pd
 class App(tk.Frame):
     def __init__(self, master):
       super().__init__(master)
+
       #text area para o link
       linkLabel = tk.Label(master, text = "Link da base de dados:", font = ("Comic Sans",10))
       linkLabel.place(x = 0, y = 0)
@@ -19,6 +20,12 @@ class App(tk.Frame):
       loadButton.place(x = 410, y = 18)
 
       #########
+      percepLabel = tk.Label(master, text="JustPerceptron", font = ("Comic Sans",9), justify="left")
+      percepLabel.place(x = 0, y = 43)
+ 
+      percepText = tk.StringVar()
+      percepBox = tk.Entry(master, textvariable=percepText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
+      percepBox.place(x = 3, y = 63)
 
       #botão quit
       quitButton = tk.Button(
@@ -31,7 +38,6 @@ class App(tk.Frame):
       url = link.get()
       try:
         dataBase = pd.read_csv(url, sep=',', encoding = 'latin1').values
-        print(dataBase[:,:])
       except:
         messagebox.showerror(title="Aviso!", message="Arquivo ou local não existe")
 
@@ -44,8 +50,6 @@ root.title('Testing Classifiers')
 #selecionar frame no centro da tela
 sW = root.winfo_screenwidth()  #retorna o largura da tela do user
 sH = root.winfo_screenheight() #retorna a altura da tela do user
-
-print(sW, ' ', sH)
 
 width = 450
 height = 200
