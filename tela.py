@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import pandas as pd
 
 class App(tk.Frame):
@@ -32,14 +33,28 @@ class App(tk.Frame):
         dataBase = pd.read_csv(url, sep=',', encoding = 'latin1').values
         print(dataBase[:,:])
       except:
-        print('Não há arquivos no local')
+        messagebox.showerror(title="Aviso!", message="Arquivo ou local não existe")
 
 
         
 
 root = tk.Tk()
 root.title('Testing Classifiers')
-root.geometry('450x200')
+
+#selecionar frame no centro da tela
+sW = root.winfo_screenwidth()  #retorna o largura da tela do user
+sH = root.winfo_screenheight() #retorna a altura da tela do user
+
+print(sW, ' ', sH)
+
+width = 450
+height = 200
+sW = (sW/2) - (width/2)
+sH = (sH/2) - (height/2)
+
+root.geometry('%dx%d+%d+%d' % (width, height, sW, sH))
+##################################
+
 root.resizable(False, False)
 
 icon = tk.PhotoImage(file = "icon.png")
