@@ -10,11 +10,12 @@ class App(tk.Frame):
 
       link = tk.StringVar()
 
-      linkArea = tk.Entry(master, textvariable=link,width = 66, border = 2, relief = "ridge",)
+      linkArea = tk.Entry(master, textvariable=link,width = 66, border = 2, relief = "ridge", highlightthickness=1, highlightcolor="blue")
+      linkArea.bind('<Return>', lambda x: self.mostra(link))
       linkArea.place(x = 3, y = 20)
       
-      b1 = tk.Button(master, text="Load", command = lambda: self.mostra(link), bg = "ForestGreen")
-      b1.place(x = 410, y = 18)
+      loadButton = tk.Button(master, text="Load", command = lambda: self.mostra(link), bg = "ForestGreen")
+      loadButton.place(x = 410, y = 18)
 
       #########
 
