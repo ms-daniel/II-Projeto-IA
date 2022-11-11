@@ -27,6 +27,19 @@ class App(tk.Frame):
       percepBox = tk.Entry(master, textvariable=percepText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
       percepBox.place(x = 3, y = 63)
 
+      #--------------#
+
+      knnLAbel = tk.Label(master, text="K-NearestNeighbors", font = ("Comic Sans",9), justify="left")
+      knnLAbel.place(x = 110, y = 43)
+
+      knnText = tk.StringVar()
+      knnBox = tk.Entry(master, textvariable=knnText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
+      knnBox.place(x = 125, y = 63)
+
+      #--------------#
+      #bte = tk.Button(master, text="teste", command=lambda: knnText.set('opa'))
+      #bte.pack()
+
       #botão quit
       quitButton = tk.Button(
                           master, text="Quit", width=20, command=master.destroy,
