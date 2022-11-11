@@ -3,18 +3,31 @@ from tkinter import ttk
 
 class App(tk.Frame):
     def __init__(self, master):
-        super().__init__(master)
-        #text area para o link
-        linkLabel = tk.Label(master, text = "Link da base de dados:", font = ("Comic Sans",10))
-        linkLabel.place(x = 0, y = 0)
+      super().__init__(master)
+      #text area para o link
+      linkLabel = tk.Label(master, text = "Link da base de dados:", font = ("Comic Sans",10))
+      linkLabel.place(x = 0, y = 0)
 
+      link = tk.StringVar()
 
-        #botão quit
-        quitButton = tk.Button(
-                            master, text="Quit", width=20, command=master.destroy,
-                            height=1, bg="red3", fg="white"
-                          )
-        quitButton.pack(side="bottom", pady=2)
+      linkArea = tk.Entry(master, textvariable=link,width = 66, border = 2, relief = "ridge",)
+      linkArea.place(x = 3, y = 20)
+      
+      b1 = tk.Button(master, text="Load", command = lambda: self.mostra(link), bg = "ForestGreen")
+      b1.place(x = 410, y = 18)
+
+      #########
+
+      #botão quit
+      quitButton = tk.Button(
+                          master, text="Quit", width=20, command=master.destroy,
+                          height=1, bg="red3", fg="white"
+                        )
+      quitButton.pack(side="bottom", pady=2)
+  
+    def mostra(self, link):
+      print(link.get())
+
 
         
 
