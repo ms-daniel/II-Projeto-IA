@@ -20,25 +20,35 @@ class App(tk.Frame):
       loadButton.place(x = 410, y = 18)
 
       #########
-      percepLabel = tk.Label(master, text="JustPerceptron", font = ("Comic Sans",9), justify="left")
-      percepLabel.place(x = 0, y = 43)
+      percepLabel = tk.Label(master, text="JustPerceptron", font = ("Comic Sans",9))
+      percepLabel.place(x = 47, y = 43)
  
       percepText = tk.StringVar()
       percepBox = tk.Entry(master, textvariable=percepText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
-      percepBox.place(x = 3, y = 63)
+      percepBox.place(x = 50, y = 63)
 
       #--------------#
 
-      knnLAbel = tk.Label(master, text="K-NearestNeighbors", font = ("Comic Sans",9), justify="left")
-      knnLAbel.place(x = 110, y = 43)
+      knnLAbel = tk.Label(master, text="K-NearestNeighbors", font = ("Comic Sans",9))
+      knnLAbel.place(x = 160, y = 43)
 
       knnText = tk.StringVar()
       knnBox = tk.Entry(master, textvariable=knnText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
-      knnBox.place(x = 125, y = 63)
+      knnBox.place(x = 178, y = 63)
 
       #--------------#
-      #bte = tk.Button(master, text="teste", command=lambda: knnText.set('opa'))
-      #bte.pack()
+
+      oneRLabel = tk.Label(master, text="One Rule (1R)", font = ("Comic Sans",9))
+      oneRLabel.place(x = 310, y = 43)
+
+      oneRText = tk.StringVar()
+      oneRBox = tk.Entry(master, textvariable=oneRText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
+      oneRBox.place(x = 311, y = 63)
+
+      #--------------#
+      doitButton = tk.Button(master, text="Do It!", command=None, font = ("Comic Sans",14), bg="green", fg="white", state="disabled")
+      doitButton.place(x = 190, y = 100)
+      
 
       #botão quit
       quitButton = tk.Button(
