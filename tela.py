@@ -64,9 +64,6 @@ class App(tk.Frame):
       except:
         messagebox.showerror(title="Aviso!", message="Arquivo ou local não existe")
 
-
-        
-
 root = tk.Tk()
 root.title('Testing Classifiers')
 
@@ -86,9 +83,6 @@ root.resizable(False, False)
 
 icon = tk.PhotoImage(file = "icon.png")
 root.iconphoto(False, icon)
-
-
-#root.attributes("-alpha", 0.5)
 
 myapp = App(root)
 myapp.mainloop()
