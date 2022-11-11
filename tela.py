@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+import pandas as pd
 
 class App(tk.Frame):
     def __init__(self, master):
@@ -11,10 +11,10 @@ class App(tk.Frame):
       link = tk.StringVar()
 
       linkArea = tk.Entry(master, textvariable=link,width = 66, border = 2, relief = "ridge", highlightthickness=1, highlightcolor="blue")
-      linkArea.bind('<Return>', lambda x: self.mostra(link))
+      linkArea.bind('<Return>', lambda x: self.validateLink(link))
       linkArea.place(x = 3, y = 20)
       
-      loadButton = tk.Button(master, text="Load", command = lambda: self.mostra(link), bg = "ForestGreen")
+      loadButton = tk.Button(master, text="Load", command = lambda: self.validateLink(link), bg = "ForestGreen")
       loadButton.place(x = 410, y = 18)
 
       #########
@@ -26,8 +26,13 @@ class App(tk.Frame):
                         )
       quitButton.pack(side="bottom", pady=2)
   
-    def mostra(self, link):
-      print(link.get())
+    def validateLink(self, link):
+      url = link.get()
+      try:
+        dataBase = pd.read_csv(url, sep=',', encoding = 'latin1').values
+        print(dataBase[:,:])
+      except:
+        print('Não há arquivos no local')
 
 
         
