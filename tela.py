@@ -10,21 +10,21 @@ class App(tk.Frame):
       linkLabel = tk.Label(master, text = "Link da base de dados:", font = ("Comic Sans",10))
       linkLabel.place(x = 0, y = 0)
 
-      link = tk.StringVar()
+      self.link = tk.StringVar()
 
-      linkArea = tk.Entry(master, textvariable=link,width = 66, border = 2, relief = "ridge", highlightthickness=1, highlightcolor="blue")
-      linkArea.bind('<Return>', lambda x: self.validateLink(link))
-      linkArea.place(x = 3, y = 20)
+      self.linkArea = tk.Entry(master, textvariable=self.link,width = 66, border = 2, relief = "ridge", highlightthickness=1, highlightcolor="blue")
+      self.linkArea.bind('<Return>', lambda x: self.validateLink(self.link))
+      self.linkArea.place(x = 3, y = 20)
       
-      loadButton = tk.Button(master, text="Load", command = lambda: self.validateLink(link), bg = "ForestGreen")
+      loadButton = tk.Button(master, text="Load", command = lambda: self.validateLink(self.link), bg = "ForestGreen")
       loadButton.place(x = 410, y = 18)
 
       #########
       percepLabel = tk.Label(master, text="JustPerceptron", font = ("Comic Sans",9))
       percepLabel.place(x = 47, y = 43)
  
-      percepText = tk.StringVar()
-      percepBox = tk.Entry(master, textvariable=percepText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
+      self.percepText = tk.StringVar()
+      percepBox = tk.Entry(master, textvariable=self.percepText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
       percepBox.place(x = 50, y = 63)
 
       #--------------#
@@ -32,8 +32,8 @@ class App(tk.Frame):
       knnLAbel = tk.Label(master, text="K-NearestNeighbors", font = ("Comic Sans",9))
       knnLAbel.place(x = 160, y = 43)
 
-      knnText = tk.StringVar()
-      knnBox = tk.Entry(master, textvariable=knnText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
+      self.knnText = tk.StringVar()
+      knnBox = tk.Entry(master, textvariable=self.knnText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
       knnBox.place(x = 178, y = 63)
 
       #--------------#
@@ -41,13 +41,13 @@ class App(tk.Frame):
       oneRLabel = tk.Label(master, text="One Rule (1R)", font = ("Comic Sans",9))
       oneRLabel.place(x = 310, y = 43)
 
-      oneRText = tk.StringVar()
-      oneRBox = tk.Entry(master, textvariable=oneRText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
+      self.oneRText = tk.StringVar()
+      oneRBox = tk.Entry(master, textvariable=self.oneRText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
       oneRBox.place(x = 311, y = 63)
 
       #--------------#
-      doitButton = tk.Button(master, text="Do It!", command=None, font = ("Comic Sans",14), bg="green", fg="white", state="disabled")
-      doitButton.place(x = 190, y = 100)
+      self.doitButton = tk.Button(master, text="Do It!", command=None, font = ("Comic Sans",14), bg="green", fg="white", state="disabled")
+      self.doitButton.place(x = 190, y = 100)
       
 
       #botão quit
@@ -57,12 +57,19 @@ class App(tk.Frame):
                         )
       quitButton.pack(side="bottom", pady=2)
   
+    #valida se há arquivo no link ou não
+    #utiliza o try except para isso
     def validateLink(self, link):
       url = link.get()
+
+      print(url)
+
       try:
-        dataBase = pd.read_csv(url, sep=',', encoding = 'latin1').values
+        arq = pd.read_csv(url, sep = ',', encoding='latin1')
       except:
         messagebox.showerror(title="Aviso!", message="Arquivo ou local não existe")
+
+      self.doitButton.config(state="normal")
 
 root = tk.Tk()
 root.title('Testing Classifiers')
