@@ -6,8 +6,8 @@ class App(tk.Frame):
     def __init__(self, master):
       super().__init__(master)
 
-      #text area para o link
-      linkLabel = tk.Label(master, text = "Link da base de dados:", font = ("Comic Sans",10))
+      #################### text area para o link ##################
+      linkLabel = tk.Label(master, text = "Database link (.csv):", font = ("Comic Sans",10))
       linkLabel.place(x = 0, y = 0)
 
       self.link = tk.StringVar()
@@ -19,35 +19,51 @@ class App(tk.Frame):
       loadButton = tk.Button(master, text="Load", command = lambda: self.validateLink(self.link), bg = "ForestGreen")
       loadButton.place(x = 410, y = 18)
 
-      #########
+      ############### radiobuttons para o separador ###############
+      self.sep = tk.StringVar()
+
+      separatorLabel = tk.Label(master, text="Separator: ")
+      separatorLabel.place(x = 70, y = 43)
+
+      self.RadioVirgula = tk.Radiobutton(master, text="comma ( , )", variable=self.sep, value=',')
+      self.RadioVirgula.place(x = 130, y = 43)
+
+      self.RadioPontoVirgula = tk.Radiobutton(master, text="semicolon ( ; )", variable=self.sep, value=';')
+      self.RadioPontoVirgula.place(x = 230, y = 43)
+      self.RadioPontoVirgula.select()
+
+      self.RadioPontoVirgula.config(state="disabled")
+      self.RadioVirgula.config(state="disabled")
+
+      ################### areas de texto e labels ##########################
       percepLabel = tk.Label(master, text="JustPerceptron", font = ("Comic Sans",9))
-      percepLabel.place(x = 47, y = 43)
+      percepLabel.place(x = 47, y = 73)
  
       self.percepText = tk.StringVar()
       percepBox = tk.Entry(master, textvariable=self.percepText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
-      percepBox.place(x = 50, y = 63)
+      percepBox.place(x = 50, y = 93)
 
       #--------------#
 
       knnLAbel = tk.Label(master, text="K-NearestNeighbors", font = ("Comic Sans",9))
-      knnLAbel.place(x = 160, y = 43)
+      knnLAbel.place(x = 160, y = 73)
 
       self.knnText = tk.StringVar()
       knnBox = tk.Entry(master, textvariable=self.knnText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
-      knnBox.place(x = 178, y = 63)
+      knnBox.place(x = 178, y = 93)
 
       #--------------#
 
       oneRLabel = tk.Label(master, text="One Rule (1R)", font = ("Comic Sans",9))
-      oneRLabel.place(x = 310, y = 43)
+      oneRLabel.place(x = 310, y = 73)
 
       self.oneRText = tk.StringVar()
       oneRBox = tk.Entry(master, textvariable=self.oneRText, width=13, border = 2, relief = "ridge", highlightthickness=1, highlightbackground="blue", state="disabled")
-      oneRBox.place(x = 311, y = 63)
+      oneRBox.place(x = 311, y = 93)
 
-      #--------------#
+      ###############################################################
       self.doitButton = tk.Button(master, text="Do It!", command=None, font = ("Comic Sans",14), bg="green", fg="white", state="disabled")
-      self.doitButton.place(x = 190, y = 100)
+      self.doitButton.place(x = 190, y = 123)
       
 
       #botão quit
@@ -56,7 +72,7 @@ class App(tk.Frame):
                           height=1, bg="red3", fg="white"
                         )
       quitButton.pack(side="bottom", pady=2)
-  
+
     #valida se há arquivo no link ou não
     #utiliza o try except para isso
     def validateLink(self, link):
@@ -65,11 +81,18 @@ class App(tk.Frame):
       print(url)
 
       try:
-        arq = pd.read_csv(url, sep = ',', encoding='latin1')
+        arq = pd.read_csv(url, sep = None, encoding='latin1')
       except:
-        messagebox.showerror(title="Aviso!", message="Arquivo ou local não existe")
+        self.doitButton.config(state="disabled")
+        messagebox.showerror(title="Warning!", message= "Possible problems:\n" +
+                                                        "1 - File does not exist in link/directory\n"+
+                                                        "2 - File is not .csv\n"+
+                                                        "3 - Unable to access the link")
+      else:
+        self.doitButton.config(state="normal")
 
-      self.doitButton.config(state="normal")
+        self.RadioPontoVirgula.config(state="normal")
+        self.RadioVirgula.config(state="normal")
 
 root = tk.Tk()
 root.title('Testing Classifiers')
