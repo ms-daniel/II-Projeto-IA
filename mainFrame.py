@@ -98,3 +98,6 @@ class App(tk.Frame):
       self.doitButton.config(state="normal", cursor="hand2")
       self.RadioPontoVirgula.config(state="normal")
       self.RadioVirgula.config(state="normal")
+      
+  def do_it(self, link, separator, neighbors, varPercep, varKnn, varOneR):
+    test(link, separator, neighbors, varPercep, varKnn, varOneR)
