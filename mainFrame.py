@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 import pandas as pd
 from back_test import test
 
@@ -24,17 +25,29 @@ class App(tk.Frame):
     self.sep = tk.StringVar()
 
     separatorLabel = tk.Label(master, text="Separator: ")
-    separatorLabel.place(x = 70, y = 43)
+    separatorLabel.place(x = 47, y = 45)
 
     self.RadioVirgula = tk.Radiobutton(master, text="comma ( , )", variable=self.sep, value=',')
-    self.RadioVirgula.place(x = 130, y = 43)
+    self.RadioVirgula.place(x = 104, y = 43)
 
     self.RadioPontoVirgula = tk.Radiobutton(master, text="semicolon ( ; )", variable=self.sep, value=';')
-    self.RadioPontoVirgula.place(x = 230, y = 43)
+    self.RadioPontoVirgula.place(x = 190, y = 43)
     self.RadioPontoVirgula.select()
 
     self.RadioPontoVirgula.config(state="disabled")
     self.RadioVirgula.config(state="disabled")
+
+    #Combobox para neighbors
+
+    neighborsLabel = tk.Label(master, text="Neighbors: ")
+    neighborsLabel.place(x = 298, y = 45)
+
+    self.knnNeighbors = tk.StringVar()
+    self.knnNeighborBox = ttk.Combobox(master, textvariable=self.knnNeighbors, width=2,
+                                  state='readonly', values=('1', '2'))
+    self.knnNeighborBox.config(state='disabled')
+    self.knnNeighborBox.set(value=1)
+    self.knnNeighborBox.place(x = 362, y = 45)
 
     ################### areas de texto e labels ##########################
     percepLabel = tk.Label(master, text="JustPerceptron", font = ("Comic Sans",9))
@@ -63,7 +76,8 @@ class App(tk.Frame):
     oneRBox.place(x = 311, y = 93)
 
     ###############################################################
-    self.doitButton = tk.Button(master, text="Do It!", command=None, font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow")
+    self.doitButton = tk.Button(master, text="Do It!", command = lambda: self.do_it(self.link.get(), self.sep.get(), 1, self.percepText, self.knnText, self.oneRText),
+                                font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow")
     self.doitButton.place(x = 190, y = 123)
     
 
@@ -82,11 +96,11 @@ class App(tk.Frame):
     """
     url = link.get()
 
-    print(url)
-
     try:
-      arq = pd.read_csv(url, sep = None, encoding='latin1')
+      arq = pd.read_csv(url, sep = None, encoding='latin1', engine='python')
+      
     except:
+      self.knnNeighborBox.config(state="disabled")
       self.doitButton.config(state="disabled", cursor="arrow")
       self.RadioPontoVirgula.config(state="disabled")
       self.RadioVirgula.config(state="disabled")
@@ -95,9 +109,13 @@ class App(tk.Frame):
                                                       "2 - File is not .csv\n"+
                                                       "3 - Unable to access the link")
     else:
+      x, columns = arq.shape
+      self.knnNeighborBox['values'] = [x+1 for x in range(columns-1)]
+      self.knnNeighborBox.config(state="readonly")
       self.doitButton.config(state="normal", cursor="hand2")
       self.RadioPontoVirgula.config(state="normal")
       self.RadioVirgula.config(state="normal")
-      
+
   def do_it(self, link, separator, neighbors, varPercep, varKnn, varOneR):
-    test(link, separator, neighbors, varPercep, varKnn, varOneR)
+    test(link, separator, neighbors, [varPercep, varKnn, varOneR])
+    
