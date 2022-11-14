@@ -9,8 +9,8 @@ accuratePerceptron = 0
 accurateOneR = 0
 
 
-def run_it(csv):
-    base_Treinamento = pd.read_csv(csv, sep=',', encoding='latin1').values
+def run_it(csv, separator, neighbors):
+    base_Treinamento = pd.read_csv(csv, sep = separator, encoding='latin1').values
     # número de linhas e colunas do arquivo
     row_count, column_count = base_Treinamento.shape
     # Por padrão a última coluna é sempre a coluna de resultados
@@ -24,6 +24,6 @@ def run_it(csv):
     global accuratePerceptron
     accuratePerceptron = perceptron.learn(atributos_norm, diagnostico_norm)
     global accurateKNN
-    accurateKNN = knn.learn(atributos_norm, diagnostico_norm)
+    accurateKNN = knn.learn(atributos_norm, diagnostico_norm, neighbors)
     global accurateOneR
     accurateOneR = oneRule.learn(atributos_norm, diagnostico_norm)
