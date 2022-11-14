@@ -76,7 +76,8 @@ class App(tk.Frame):
     oneRBox.place(x = 311, y = 93)
 
     ###############################################################
-    self.doitButton = tk.Button(master, text="Do It!", command = lambda: self.do_it(self.link.get(), self.sep.get(), 1, self.percepText, self.knnText, self.oneRText),
+    self.doitButton = tk.Button(master, text="Do It!", command = lambda: self.do_it(self.link.get(), self.sep.get(),
+                                self.knnNeighbors.get(), self.percepText, self.knnText, self.oneRText),
                                 font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow")
     self.doitButton.place(x = 190, y = 123)
     
@@ -91,7 +92,6 @@ class App(tk.Frame):
   def validateLink(self, link):
     """
         validate the link, directory and file extension
-
         :param link: string
     """
     url = link.get()
@@ -117,5 +117,8 @@ class App(tk.Frame):
       self.RadioVirgula.config(state="normal")
 
   def do_it(self, link, separator, neighbors, varPercep, varKnn, varOneR):
-    test(link, separator, neighbors, [varPercep, varKnn, varOneR])
-    
+    try:
+      test(link, separator, int(neighbors), [varPercep, varKnn, varOneR])
+    except:
+      messagebox.showerror(title="Warning!", message= "the algorithm failed to run for some reason.\nMaybe you selected the wrong separator.")
+      

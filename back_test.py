@@ -11,6 +11,7 @@ def test(url, separator, neighbors, listVar):
         :param neighbors:   int
         :param listVar:     StringVar list(0 = perceptron, 1 = knn, 2 = oneRule)
     """
+
     runit.run_it(url, separator, neighbors)
 
     listVar[0].set(runit.accuratePerceptron)

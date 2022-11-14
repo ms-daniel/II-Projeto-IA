@@ -11,8 +11,10 @@ accurateOneR = 0
 
 def run_it(csv, separator, neighbors):
     base_Treinamento = pd.read_csv(csv, sep = separator, encoding='latin1').values
+
     # número de linhas e colunas do arquivo
     row_count, column_count = base_Treinamento.shape
+
     # Por padrão a última coluna é sempre a coluna de resultados
     fim = column_count-1
 
