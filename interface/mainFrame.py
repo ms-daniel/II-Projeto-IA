@@ -81,16 +81,16 @@ class App(tk.Frame):
                                 font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow", width=13)
     self.doitButton.place(x = 243, y = 123)
 
-    self.removeColumns = tk.Menubutton(master, text="Select Columns", command = None, font = ("Comic Sans",14), bg="gray",
-                                      fg="white", state="normal", cursor="arrow")
-    self.removeColumns.place(x = 50, y = 123)
+    self.removeColumns = tk.Menubutton(master, text="Select Columns", command = None, font = ("Comic Sans",14), bg="blue3",
+                                      fg="white", state="disabled", cursor="arrow", activebackground="blue", activeforeground="black")
+    self.removeColumns.place(x = 50, y = 126)
 
     self.removeColumns.menu =  tk.Menu( self.removeColumns, tearoff = 0)
     self.removeColumns["menu"] =  self.removeColumns.menu
 
     #botão quit
     quitButton = tk.Button(
-                        master, text="Quit", width=20, command=master.destroy,
+                        master, text="Quit", width=20, command= lambda: self.removeColumns.menu.active,
                         height=1, bg="red3", fg="white", cursor="hand2"
                       )
     quitButton.pack(side="bottom", pady=2)
@@ -119,7 +119,7 @@ class App(tk.Frame):
     else:
       self.loadColumns()
       x, columns = self.arq.shape
-      #self.removeColumns.config(state="normal")
+      self.removeColumns.config(state="normal")
       self.knnNeighborBox['values'] = [x+1 for x in range(columns-1)]
       self.knnNeighborBox.config(state="readonly")
       self.doitButton.config(state="normal", cursor="hand2")
@@ -127,10 +127,14 @@ class App(tk.Frame):
       self.RadioVirgula.config(state="normal")
 
   def loadColumns(self):
+    '''
+
+    '''
     for x in self.arq.columns:
       self.removeColumns.menu.add_checkbutton(label=x)
     else:
-      self.removeColumns.menu.remo
+      self.removeColumns.menu.delete(x)
+      
   #def removeColumns():
     #Todo
 
