@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import pandas as pd
-from back_test import test
+from modulos.back_test import test
 
 class App(tk.Frame):
   def __init__(self, master):
@@ -78,9 +78,15 @@ class App(tk.Frame):
     ###############################################################
     self.doitButton = tk.Button(master, text="Do It!", command = lambda: self.do_it(self.link.get(), self.sep.get(),
                                 self.knnNeighbors.get(), self.percepText, self.knnText, self.oneRText),
-                                font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow")
-    self.doitButton.place(x = 190, y = 123)
-    
+                                font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow", width=13)
+    self.doitButton.place(x = 243, y = 123)
+
+    self.removeColumns = tk.Menubutton(master, text="Select Columns", command = None, font = ("Comic Sans",14), bg="gray",
+                                      fg="white", state="normal", cursor="arrow")
+    self.removeColumns.place(x = 50, y = 123)
+
+    self.removeColumns.menu =  tk.Menu( self.removeColumns, tearoff = 0)
+    self.removeColumns["menu"] =  self.removeColumns.menu
 
     #botão quit
     quitButton = tk.Button(
@@ -97,24 +103,36 @@ class App(tk.Frame):
     url = link.get()
 
     try:
-      arq = pd.read_csv(url, sep = None, encoding='latin1', engine='python')
+      self.arq = pd.read_csv(url, sep = None, encoding='latin1', engine='python')
       
     except:
       self.knnNeighborBox.config(state="disabled")
       self.doitButton.config(state="disabled", cursor="arrow")
       self.RadioPontoVirgula.config(state="disabled")
       self.RadioVirgula.config(state="disabled")
+      self.removeColumns.config(state="disabled")
+      self.removeColumns.bind('<Enter>', lambda x: None)
       messagebox.showerror(title="Warning!", message= "Possible problems:\n" +
                                                       "1 - File does not exist in link/directory\n"+
                                                       "2 - File is not .csv\n"+
                                                       "3 - Unable to access the link")
     else:
-      x, columns = arq.shape
+      self.loadColumns()
+      x, columns = self.arq.shape
+      #self.removeColumns.config(state="normal")
       self.knnNeighborBox['values'] = [x+1 for x in range(columns-1)]
       self.knnNeighborBox.config(state="readonly")
       self.doitButton.config(state="normal", cursor="hand2")
       self.RadioPontoVirgula.config(state="normal")
       self.RadioVirgula.config(state="normal")
+
+  def loadColumns(self):
+    for x in self.arq.columns:
+      self.removeColumns.menu.add_checkbutton(label=x)
+    else:
+      self.removeColumns.menu.remo
+  #def removeColumns():
+    #Todo
 
   def do_it(self, link, separator, neighbors, varPercep, varKnn, varOneR):
     try:

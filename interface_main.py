@@ -1,5 +1,5 @@
 import tkinter as tk
-from mainFrame import App
+from interface.mainFrame import App
 
 root = tk.Tk()
 root.title('Testing Classifiers')
@@ -18,7 +18,7 @@ root.geometry('%dx%d+%d+%d' % (width, height, sW, sH))
 
 root.resizable(False, False)
 
-icon = tk.PhotoImage(file = "icon.png")
+icon = tk.PhotoImage(file = "images\icon.png")
 root.iconphoto(False, icon)
 
 myapp = App(root)

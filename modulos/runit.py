@@ -1,8 +1,8 @@
 import pandas as pd
 from sklearn import preprocessing
-import perceptron
-import knn
-import oneRule
+from modulos import perceptron
+from modulos import knn
+from modulos import oneRule
 
 accurateKNN = 0
 accuratePerceptron = 0

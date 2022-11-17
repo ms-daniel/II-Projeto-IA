@@ -1,4 +1,4 @@
-import runit
+from modulos import runit
 from tkinter import StringVar
 #
 #
