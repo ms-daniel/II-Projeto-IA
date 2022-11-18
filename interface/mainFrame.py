@@ -81,16 +81,13 @@ class App(tk.Frame):
                                 font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow", width=13)
     self.doitButton.place(x = 243, y = 123)
 
-    self.removeColumns = tk.Menubutton(master, text="Select Columns", command = None, font = ("Comic Sans",14), bg="blue3",
+    self.removeColumns = tk.Button(master, text="Select Columns", command = None, font = ("Comic Sans",14), bg="blue3",
                                       fg="white", state="disabled", cursor="arrow", activebackground="blue", activeforeground="black")
-    self.removeColumns.place(x = 50, y = 126)
-
-    self.removeColumns.menu =  tk.Menu( self.removeColumns, tearoff = 0)
-    self.removeColumns["menu"] =  self.removeColumns.menu
+    self.removeColumns.place(x = 50, y = 123)
 
     #botão quit
     quitButton = tk.Button(
-                        master, text="Quit", width=20, command= lambda: self.removeColumns.menu.active,
+                        master, text="Quit", width=20, command= self.createTopLevelWindows,
                         height=1, bg="red3", fg="white", cursor="hand2"
                       )
     quitButton.pack(side="bottom", pady=2)
@@ -117,7 +114,7 @@ class App(tk.Frame):
                                                       "2 - File is not .csv\n"+
                                                       "3 - Unable to access the link")
     else:
-      self.loadColumns()
+      
       x, columns = self.arq.shape
       self.removeColumns.config(state="normal")
       self.knnNeighborBox['values'] = [x+1 for x in range(columns-1)]
@@ -128,13 +125,40 @@ class App(tk.Frame):
 
   def loadColumns(self):
     '''
-
+      Creates a checkbox for each column of the csv
     '''
+    j = 1
+    #para cada coluna do arquivo ele adiciona um elemento na listbox
+    #e associa um index(j) a ela, ao final a ulima coluna é removida
+    #pois é a coluna de testes 
     for x in self.arq.columns:
-      self.removeColumns.menu.add_checkbutton(label=x)
+      self.listColumns.insert(j, x)
+      j+=1
     else:
-      self.removeColumns.menu.delete(x)
+      self.listColumns.delete(first=j-2)
+      if j > 13:
+        j = 13
+      self.listColumns.config(height=j-2, width=30)
       
+
+  def createTopLevelWindows(self):
+    self.winTest = tk.Toplevel(padx=5, pady=5)
+    self.winTest.resizable(width = 0, height = 0)
+    self.winTest.title('Remove Columns')
+    self.winTest.grab_set()
+
+    scrollBar = tk.Scrollbar(self.winTest)
+    scrollBar.pack(side="right", fill="both")
+
+    self.listColumns = tk.Listbox(self.winTest, selectmode="multiple", selectbackground="green", background="red", foreground="white")
+    self.loadColumns()
+    self.listColumns.selection_set(first=0, last=self.listColumns.index("end"))
+    self.listColumns.pack(expand = True, side = "left", fill = "both")
+
+    self.listColumns.config(yscrollcommand = scrollBar.set)
+    scrollBar.config(command = self.listColumns.yview)
+
+
   #def removeColumns():
     #Todo
 
