@@ -82,10 +82,10 @@ class App(tk.Frame):
     ###############################################################
     self.doitButton = tk.Button(master, text="Do It!", command = lambda: self.do_it(self.link.get(), self.sep.get(),
                                 self.knnNeighbors.get(), self.percepText, self.knnText, self.oneRText),
-                                font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow", width=13)
-    self.doitButton.place(x = 243, y = 123)
+                                font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow", width=14)
+    self.doitButton.place(x = 233, y = 123)
 
-    self.removeColumns = tk.Button(master, text="Select Columns", command = None, font = ("Comic Sans",14), bg="blue3",
+    self.removeColumns = tk.Button(master, text="Remove Columns", command = None, font = ("Comic Sans",14), bg="blue3", width=14,
                                       fg="white", state="disabled", cursor="arrow", activebackground="blue", activeforeground="black")
     self.removeColumns.place(x = 50, y = 123)
 
