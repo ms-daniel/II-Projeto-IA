@@ -21,5 +21,5 @@ root.resizable(False, False)
 icon = tk.PhotoImage(file = "images\icon.png")
 root.iconphoto(False, icon)
 
-myapp = App(root)
+myapp = App(root, sW, sH)
 myapp.mainloop()

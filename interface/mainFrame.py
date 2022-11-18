@@ -5,14 +5,18 @@ import pandas as pd
 from modulos.back_test import test
 
 class App(tk.Frame):
-  def __init__(self, master):
+  def __init__(self, master, locale_x, locale_y):
     super().__init__(master)
+
+    self.locale_x = locale_x
+    self.locale_y = locale_y
 
     #################### text area para o link ##################
     linkLabel = tk.Label(master, text = "Database link (.csv):", font = ("Comic Sans",10))
     linkLabel.place(x = 0, y = 0)
 
     self.link = tk.StringVar()
+    self.link.set('https://raw.githubusercontent.com/ms-daniel/Exercicios-Inteligencia-Artificial/main/base_de_dados_diabetes.csv')
 
     self.linkArea = tk.Entry(master, textvariable=self.link,width = 66, border = 2, relief = "ridge", highlightthickness=1, highlightcolor="blue")
     self.linkArea.bind('<Return>', lambda x: self.validateLink(self.link))
@@ -87,7 +91,7 @@ class App(tk.Frame):
 
     #botão quit
     quitButton = tk.Button(
-                        master, text="Quit", width=20, command= self.createTopLevelWindows,
+                        master, text="Quit", width=20, command= self.RemoveColumnsFrame,
                         height=1, bg="red3", fg="white", cursor="hand2"
                       )
     quitButton.pack(side="bottom", pady=2)
@@ -101,7 +105,6 @@ class App(tk.Frame):
 
     try:
       self.arq = pd.read_csv(url, sep = None, encoding='latin1', engine='python')
-      
     except:
       self.knnNeighborBox.config(state="disabled")
       self.doitButton.config(state="disabled", cursor="arrow")
@@ -114,7 +117,7 @@ class App(tk.Frame):
                                                       "2 - File is not .csv\n"+
                                                       "3 - Unable to access the link")
     else:
-      
+      self.colToRemove = [None]
       x, columns = self.arq.shape
       self.removeColumns.config(state="normal")
       self.knnNeighborBox['values'] = [x+1 for x in range(columns-1)]
@@ -132,32 +135,59 @@ class App(tk.Frame):
     #e associa um index(j) a ela, ao final a ulima coluna é removida
     #pois é a coluna de testes 
     for x in self.arq.columns:
-      self.listColumns.insert(j, x)
-      j+=1
+      if (x not in self.colToRemove):
+        self.listColumns.insert(j, x)
+        j+=1
     else:
       self.listColumns.delete(first=j-2)
-      if j > 13:
-        j = 13
+
+    if j > 11:
+      j = 11
       self.listColumns.config(height=j-2, width=30)
       
 
-  def createTopLevelWindows(self):
+  def RemoveColumnsFrame(self):
+    '''
+      Create the toplevel window to deselect columns to drop then
+    '''
     self.winTest = tk.Toplevel(padx=5, pady=5)
     self.winTest.resizable(width = 0, height = 0)
+    self.winTest.geometry('%dx%d+%d+%d' % (200, 200, self.locale_x+451, self.locale_y))
     self.winTest.title('Remove Columns')
+
+    text = tk.Label(self.winTest, text="Deselect columns to remove")
+    text.pack()
+
+    b1 = tk.Button(self.winTest, text="Done", command=self.dropColumns)
+    b1.pack(side="bottom", fill="both")
+    
     self.winTest.grab_set()
 
     scrollBar = tk.Scrollbar(self.winTest)
     scrollBar.pack(side="right", fill="both")
 
-    self.listColumns = tk.Listbox(self.winTest, selectmode="multiple", selectbackground="green", background="red", foreground="white")
+    self.listColumns = tk.Listbox(self.winTest, selectmode="multiple", selectbackground="red", bg="green", fg="white")
     self.loadColumns()
-    self.listColumns.selection_set(first=0, last=self.listColumns.index("end"))
+
     self.listColumns.pack(expand = True, side = "left", fill = "both")
 
     self.listColumns.config(yscrollcommand = scrollBar.set)
     scrollBar.config(command = self.listColumns.yview)
 
+  def dropColumns(self):
+    '''
+      Insert the columns to drop into a list and destroy top level window
+    '''
+    for y in self.listColumns.curselection():
+      self.colToRemove.append(self.listColumns.get(y))
+
+    self.winTest.destroy()
+
+
+    
+
+    
+    
 
   #def removeColumns():
     #Todo
