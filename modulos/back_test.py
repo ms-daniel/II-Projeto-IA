@@ -2,7 +2,7 @@ from modulos import runit
 from tkinter import StringVar
 #
 #
-def test(url, separator, neighbors, listVar):
+def test(url, separator, neighbors, listVar, removeds):
     """
         calculates the accuracy for the classifierless perceptron model, with the KNN classifier and the One Rule
 
@@ -11,8 +11,8 @@ def test(url, separator, neighbors, listVar):
         :param neighbors:   int
         :param listVar:     StringVar list(0 = perceptron, 1 = knn, 2 = oneRule)
     """
-
-    runit.run_it(url, separator, neighbors)
+    
+    runit.run_it(url, separator, neighbors, removeds)
 
     listVar[0].set(runit.accuratePerceptron)
     listVar[1].set(runit.accurateKNN)

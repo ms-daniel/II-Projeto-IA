@@ -9,8 +9,12 @@ accuratePerceptron = 0
 accurateOneR = 0
 
 
-def run_it(csv, separator, neighbors):
-    base_Treinamento = pd.read_csv(csv, sep = separator, encoding='latin1').values
+def run_it(csv, separator, neighbors, removeds):
+    csv = pd.read_csv(csv, sep = separator, encoding='latin1')
+    for x in removeds:
+        csv.pop(x)
+
+    base_Treinamento = csv.to_numpy()
 
     # número de linhas e colunas do arquivo
     row_count, column_count = base_Treinamento.shape

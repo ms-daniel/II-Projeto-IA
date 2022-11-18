@@ -85,13 +85,13 @@ class App(tk.Frame):
                                 font = ("Comic Sans",14), bg="green", fg="white", state="disabled", cursor="arrow", width=14)
     self.doitButton.place(x = 233, y = 123)
 
-    self.removeColumns = tk.Button(master, text="Remove Columns", command = None, font = ("Comic Sans",14), bg="blue3", width=14,
-                                      fg="white", state="disabled", cursor="arrow", activebackground="blue", activeforeground="black")
+    self.removeColumns = tk.Button(master, text="Remove Columns", command = self.RemoveColumnsFrame, font = ("Comic Sans",14), bg="blue3", width=14,
+                                  fg="white", state="disabled", cursor="arrow", activebackground="blue", activeforeground="black")
     self.removeColumns.place(x = 50, y = 123)
 
     #botão quit
     quitButton = tk.Button(
-                        master, text="Quit", width=20, command= self.RemoveColumnsFrame,
+                        master, text="Quit", width=20, command= master.destroy,
                         height=1, bg="red3", fg="white", cursor="hand2"
                       )
     quitButton.pack(side="bottom", pady=2)
@@ -117,7 +117,7 @@ class App(tk.Frame):
                                                       "2 - File is not .csv\n"+
                                                       "3 - Unable to access the link")
     else:
-      self.colToRemove = [None]
+      self.colToRemove = []
       x, columns = self.arq.shape
       self.removeColumns.config(state="normal")
       self.knnNeighborBox['values'] = [x+1 for x in range(columns-1)]
@@ -137,7 +137,10 @@ class App(tk.Frame):
     for x in self.arq.columns:
       if (x not in self.colToRemove):
         self.listColumns.insert(j, x)
-        j+=1
+      else:
+        self.listColumns.insert(j, x)
+        self.listColumns.select_set(first=j-1)
+      j+=1
     else:
       self.listColumns.delete(first=j-2)
 
@@ -178,23 +181,15 @@ class App(tk.Frame):
     '''
       Insert the columns to drop into a list and destroy top level window
     '''
+    self.colToRemove.clear()
     for y in self.listColumns.curselection():
       self.colToRemove.append(self.listColumns.get(y))
-
     self.winTest.destroy()
 
 
-    
-
-    
-    
-
-  #def removeColumns():
-    #Todo
-
   def do_it(self, link, separator, neighbors, varPercep, varKnn, varOneR):
     try:
-      test(link, separator, int(neighbors), [varPercep, varKnn, varOneR])
+      test(link, separator, int(neighbors), [varPercep, varKnn, varOneR], self.colToRemove)
     except:
       messagebox.showerror(title="Warning!", message= "the algorithm failed to run for some reason.\nMaybe you selected the wrong separator.")
       
